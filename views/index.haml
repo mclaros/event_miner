@@ -5,19 +5,22 @@
 		%script{:src => "jquery-1.11.0.min.js"}
 
 	%body
-		%h1 Event Miner
+		%h1 Event/ Miner
 		%small
 			Not quite as good as Event/
 			%em Mainor
 		%br
 		%br
 		%div
-			%form{:action => "/url", :method => "POST"}
+			%form{:action => "/url", :method => "GET"}
 				%label
 					Enter url:
 					%br
 						%input#url-input{:type => "text", :name => "url[address]", :placeholder => "http://www.spot.it"}
 				%input#url-get-button{:type => "submit", :value => "Get"}
-				%textarea#filters-input{:name => "filters[matchers]", :rows => 4}
-					time_12_hour: /([0-1]?[0-9]):([0-5][0-9])/;
-					event_word: 'word'
+				%br
+				%label
+					Filters:
+					%br
+					%textarea#filters-input{:name => "filters[matchers]", :style => "width: 400px;", :rows => 10}
+						= "within_url:event \rregexp:/([0-1]?[0-9]):([0-5][0-9])/ \rword:event \rword:events \rword:admission \rword:where \rword:map \rword:location \rword:when \rhas_type:day \rword:ticket \rword:tickets"
