@@ -1,13 +1,19 @@
 !!! 5
 %html
+	%head
+		%title Event Miner
+		%script{:src => "jquery-1.11.0.min.js"}
+
 	%body
 		%h1 Event Miner
 		%small
 			Not quite as good as Event
 			%em Mainor
-
-		%label
-			Enter url:
-			%br
-			%input#url-input{:type => "text"}
-			%button#url-get-button Get
+		%br
+		%br
+		%div
+			%label
+				Enter url:
+				%br
+				%input#url-input{:type => "text"}
+				%button#url-get-button Get

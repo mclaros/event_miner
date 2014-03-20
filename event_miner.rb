@@ -1,5 +1,7 @@
 require 'sinatra'
+require 'haml'
+require 'net/http'
 
 get '/' do
-	"Hello, World"
+	haml :index
 end
