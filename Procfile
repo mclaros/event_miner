@@ -1,1 +1,1 @@
-eventminer: bundle exec ruby event_miner.rb -p $PORT
+web: bundle exec ruby event_miner.rb -p $PORT
