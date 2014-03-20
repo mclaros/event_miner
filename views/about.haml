@@ -1,0 +1,88 @@
+!!! 5
+%html
+	%head
+		%title Event/ Miner
+
+	%body
+		%div{:style => "width: 500px;"}
+			%h1 Event/ Miner/ About
+			%small
+				Not quite as good as Event/
+				%em Mainor
+
+			%p
+				%a{:href => "/"}
+					Home
+
+			%h3 Backend
+			%p
+				Using Ruby + Sinatra. You can view the source code here:
+				%a{:href => "https://github.com/mclaros/event_miner"}
+					https://github.com/mclaros/event_miner
+			%p
+				The relevant files are: event_miner.rb, has_event.rb, url_get.rb
+			%p
+				Scroll down for Known Issues
+			%p
+				Uses the following gems/libraries
+				%ul
+					%li Sinatra (light web framework)
+					%li Haml (HTML templating)
+					%li Nokogiri (HTML document parser)
+					%li Ruby: net/http (built-in Ruby HTTP request handler)
+
+			%h3 Premise
+			%p
+				The basic strategy employed here is as follows:
+				%ol
+					%li Fetch the contents of the given URL
+					%li Parse the HTML document
+					%li
+						Extract
+						%em body
+						text and split into words
+					%li
+						Compare collected words against given filters
+						%ul
+							%li Presumably you want to provide matchers you'd expect to find in an event page, like time/location/price/etc.
+							%li Assuming the above, the more matches there are, the better
+					%li Also attempt to locate links that contain given text and (optionally) do the above steps for those links as well
+
+			%h3 How is this useful?
+			%p
+				In practice you would expect uniform event pages to follow a standard, according to their host organization. If you query multiple event pages, you would probably find a clear average in the amount of matches found. For example, you probably expect each such page to have up to 4 dates and times (Start Times and End Times).
+
+			%p
+				Note that the above strategy would fall apart in pages that allow user comments (think Meetup.com). Why? People are likely to comment on times, locations, and all matter of other things you may want to count.
+
+			%h3 Why use libraries?
+			%p
+				This is more of a proof of concept than anything. One thing to note: using Nokogiri is most definitely overkill.
+			%p
+				Nokogiri parses an HTML document into (embedded) objects, where each object corresponds to a DOM element. It's very powerful, allowing you to do things much like you could with jQuery (search through DOMs, their relative DOMs, their contents/attributes, etc.). Since it does this for the entire document, it's not the most memory efficient for simply screen-scraping. Still, it's not much worse than loading any old HTML document.
+
+			%h3 What about outside of Ruby?
+			%p
+				There are definitely (better) counterparts that do similar things in Node.js. Hell, even jQuery can do some of what Nokogiri allows.
+				%br
+				Example: $("a:contains('event')") <-- This finds all links that have the word "event" within them (but does not search the 'href' itself).
+
+			%h3 Is this efficient?
+			%strong
+				%strike No
+			%p
+				It could be better.
+
+			%p
+				For one thing, I abused string and array iteration far too many times. With long HTML docs and many possible links to fetch, this would explode very quickly for many subsequent page searches. In practice, I would replace arrays to Hash Sets when order is irrelevant.
+			%p
+				If a page has many links that match given parameters, Event/ Miner will also query each of those in successin. Very spammy, and can potentially bottleneck the process. Node's event-drivenness would benefit here.
+
+			%h3 Known Issues
+			%ul
+				%li Does not handle redirects, so searching a link that points to a redirect will most likely only get you the GET header string.
+				%li The option allowing you to also check found links does not always work. Depends on target page.
+				%li The option to check found links only checks the text within an anchor tag. It does NOT check the href.
+
+			%h3 Conclusion
+			%p This is pretty much a brute of a screen-scraper.

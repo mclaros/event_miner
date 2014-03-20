@@ -30,3 +30,7 @@ get '/url' do
 
 	haml :results
 end
+
+get '/about' do
+	haml :about
+end
