@@ -1,14 +1,14 @@
-def search_page(url, filters)
+def search_page(uri, filters)
 	begin
-		doc = query_url(url)
+		doc = query_url(uri)
 	rescue
 		return "Please go back and make sure you entered correct url. Ex: 'http://www.google.com'"
 	end
 	body = doc.css('body') #search by CSS selector
 	words = get_body_text(body)
 	results = {:words => words}
-	results.merge(text_filter(words, filters)).inspect
-	# results.inspect
+	results[:matches_found] = text_filter(words, filters, uri.to_s)
+	results
 end
 
 def query_url(url)

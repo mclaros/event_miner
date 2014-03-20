@@ -1,0 +1,42 @@
+!!! 5
+%html
+	%head
+		%title Event/ Miner/ Results
+
+	%body
+
+		%div
+			%form{:action => "/url", :method => "GET"}
+				%label
+					Enter url:
+					%br
+						%input#url-input{:type => "text", :name => "url[address]", :placeholder => "http://www.spot.it", :value => @url}
+				%input#url-get-button{:type => "submit", :value => "Get"}
+				%br
+				%div
+					%label
+						Filters:
+						%br
+						%textarea#filters-input{:name => "filters[matchers]", :style => "width: 400px;", :rows => 10}
+							= @filters_input
+
+		%hr
+
+		#matches-found
+			= "<strong>#{(@results[:matches_found][:total_matches] || 0)}</strong> matches found from #{(@results[:matches_found][:total_filters] || 0)} filters (more is better):"
+			%ul
+				- @results[:matches_found].each do |filter_name, match_count|
+					- next if filter_name == :total_matches
+					%li
+						%strong
+							- count_str = match_count.to_s
+							= count_str + ("&nbsp;" * (5 - count_str.length))
+						= filter_name
+
+		#words-found
+			Words found:
+			%p
+				= @results[:words].join(" &#149; ")
+
+		%hr
+		= p @results
