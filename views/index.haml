@@ -1,19 +1,23 @@
 !!! 5
 %html
 	%head
-		%title Event Miner
+		%title Event/ Miner
 		%script{:src => "jquery-1.11.0.min.js"}
 
 	%body
 		%h1 Event Miner
 		%small
-			Not quite as good as Event
+			Not quite as good as Event/
 			%em Mainor
 		%br
 		%br
 		%div
-			%label
-				Enter url:
-				%br
-				%input#url-input{:type => "text"}
-				%button#url-get-button Get
+			%form{:action => "/url", :method => "POST"}
+				%label
+					Enter url:
+					%br
+						%input#url-input{:type => "text", :name => "url[address]", :placeholder => "http://www.spot.it"}
+				%input#url-get-button{:type => "submit", :value => "Get"}
+				%textarea#filters-input{:name => "filters[matchers]", :rows => 4}
+					time_12_hour: /([0-1]?[0-9]):([0-5][0-9])/;
+					event_word: 'word'
