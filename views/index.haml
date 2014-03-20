@@ -18,9 +18,37 @@
 						%input#url-input{:type => "text", :name => "url[address]", :placeholder => "http://www.spot.it"}
 				%input#url-get-button{:type => "submit", :value => "Get"}
 				%br
+				%div{:style => "width: 400px; display: inline-block"}
+					%label
+						%strong Count the number of words that match filters:
+						%br
+						Format is "FilterType:ThingToCompareTo", without quotes.
+						%br
+						Filters separated by newline.
+						%br
+						%textarea#filters-input{:name => "filters[matchers]", :rows => 10, :style => "width: 400px;"}
+							= "within_url:event \rregexp:/([0-1]?[0-9]):([0-5][0-9])/ \rword:event \rword:events \rword:admission \rword:where \rword:map \rword:location \rword:when \rhas_type:day \rword:ticket \rword:tickets"
+				%div{:style => "width: 400px; display: inline-block"}
+					%p
+						Fetched words are downcased, so it's recommended you provide everything in small caps.
+					%ul
+						%li
+							%strong within_url
+							Accepts string or regexp; checks to see if the given URL path contains the given STRING or REGEXP
+						%li
+							%strong regexp
+							Accepts regexp; compares words found using a regular expression
+						%li
+							%strong word
+							Accepts string; compares words with given string
+						%li
+							%strong has_type
+							Compares word against a predetermined set. Presets include:
+							%em day, month, time_12_hour, time_24_hour
+							Ex: "has_type:day" checks to see if word is "monday/mon, tuesday/tue, ..."
+
 				%div
 					%label
-						Filters:
+						%strong Fetch me links that contain (separate terms by comma):
 						%br
-						%textarea#filters-input{:name => "filters[matchers]", :style => "width: 400px;", :rows => 10}
-							= "within_url:event \rregexp:/([0-1]?[0-9]):([0-5][0-9])/ \rword:event \rword:events \rword:admission \rword:where \rword:map \rword:location \rword:when \rhas_type:day \rword:ticket \rword:tickets"
+						%input{:type => "text", :name => "filters[links]", :value => "event,events"}

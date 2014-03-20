@@ -12,8 +12,9 @@ end
 get '/url' do
 	@url = params[:url][:address]
 	@filters_input = params[:filters][:matchers]
-	filters_given = @filters_input.split(/\s+/)
+	@links_filters_input = params[:filters][:links]
 
+	filters_given = @filters_input.split(/\s+/)
 	filters = parse_filters(filters_given)
 	@results = search_page(@url, filters)
 

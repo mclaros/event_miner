@@ -17,8 +17,11 @@ def query_url(url)
 	Nokogiri::HTML(result)
 end
 
-
 def get_body_text(nokogiri_obj)
 	text = nokogiri_obj.text.downcase
 	text.split(/\W+/)
+end
+
+def links_that_contain(parent_nokogiri_obj, text)
+	parent_nokogiri_obj.search("a:contains('#{text}')")
 end
