@@ -15,7 +15,7 @@
 				%label
 					Enter url:
 					%br
-						%input#url-input{:type => "text", :name => "url[address]", :placeholder => "http://www.spot.it"}
+						%input#url-input{:type => "text", :name => "url[address]", :placeholder => "http://www.spoton.it"}
 				%input#url-get-button{:type => "submit", :value => "Get"}
 				%br
 				%div{:style => "width: 400px; display: inline-block"}
@@ -50,6 +50,11 @@
 
 				%div
 					%label
-						%strong Fetch me links that contain (separate terms by comma):
+						%strong Fetch me links that contain (separate terms by comma; enter "*" to retrieve all links):
 						%br
 						%input{:type => "text", :name => "filters[links]", :value => "event,events"}
+
+					%label
+						%input{:type => "checkbox", :name => "filters[check_links]", :checked => false}		
+						Check those links with match filters as well
+					%small | Note: may slow down results

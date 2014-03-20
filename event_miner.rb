@@ -12,13 +12,21 @@ end
 get '/url' do
 	@url = params[:url][:address]
 	@filters_input = params[:filters][:matchers]
-	@links_filters_input = params[:filters][:links]
+	@links_filters_input = params[:filters][:links] || ""
+	@check_links = params[:filters][:check_links]
 
 	filters_given = @filters_input.split(/\s+/)
-	filters = parse_filters(filters_given)
-	@results = search_page(@url, filters)
+	word_filters = parse_filters(filters_given)
+	link_filters = @links_filters_input.split(",")
 
-	#simplest way to notify of error string
+	@results = search_page(@url, word_filters, link_filters)
+
+	if @check_links && !@results[:links_found].empty?
+		@results[:checked_links] = assess_links(@results[:links_found], word_filters)
+	end
+
+	#I am using a string to represent any errors found
 	return @results if @results.is_a? String
+
 	haml :results
 end

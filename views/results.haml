@@ -9,7 +9,7 @@
 				%label
 					Enter url:
 					%br
-						%input#url-input{:type => "text", :name => "url[address]", :placeholder => "http://www.spot.it", :value => @url}
+						%input#url-input{:type => "text", :name => "url[address]", :placeholder => "http://www.spoton.it", :value => @url}
 				%input#url-get-button{:type => "submit", :value => "Get"}
 				%br
 				%div{:style => "width: 400px; display: inline-block"}
@@ -45,24 +45,58 @@
 
 				%div
 					%label
-						%strong Fetch me links that contain (separate terms by comma):
+						%strong Fetch me links that contain (separate terms by comma; enter "*" to retrieve all links):
 						%br
 						%input{:type => "text", :name => "filters[links]", :value => "event,events", :value => @links_filters_input}
 
+					%label
+						%input{:type => "checkbox", :name => "filters[check_links]", :checked => (@check_links || false)}		
+						Check those links with match filters as well
+					%small | Note: may slow down results
+
 		%hr
 
-		#matches-found
-			= "<strong>#{(@results[:matches_found][:total_matches] || 0)}</strong> matches found from #{(@results[:matches_found][:total_filters] || 0)} filters (more is better):"
-			%ul
-				- @results[:matches_found].each do |filter_name, match_count|
-					- next if filter_name == :total_matches
-					%li
-						%strong
-							- count_str = match_count.to_s
-							= count_str + ("&nbsp;" * (5 - count_str.length))
-						= filter_name
+		%table
+			%tr
+				%th Page body
+				%th Page links
+			%tr
+				%td
+					#matches-found{:style => "max-width: 500px; display: inline;"}
+						= "<strong>#{(@results[:matches_found][:total_matches] || 0)}</strong> matches found from #{(@results[:matches_found][:total_filters] || 0)} filters (more is better):"
+						%ul
+							- @results[:matches_found].each do |filter_name, match_count|
+								- next if filter_name.is_a? Symbol
+								%li
+									%strong
+										- count_str = match_count.to_s
+										= count_str + ("&nbsp;" * (5 - count_str.length))
+									= filter_name
 
-		#words-found
-			Words found:
-			%p
-				= @results[:words].join(" &#149; ")
+				%td{:width => "500px", :padding => "0"}
+					#links-found{:style => "max-width: 500px; diplay: inline;"}
+						Found these links:
+						%ul
+							- if @results[:checked_links]
+								- @results[:checked_links].each do |link_url, results_hash|
+									%li
+										= link_url
+										|
+										= "<strong>#{results_hash[:total_matches]}</strong> matches found from #{results_hash[:total_filters]}"
+										%form{:action => "/url", :method => "GET"}
+											%input{:type => "hidden", :name => "url[address]", :value => link_url}
+											%input{:type => "hidden", :name => "filters[matchers]", :value => @filters_input}
+											%input{:type => "hidden", :name => "filters[links]", :value => @links_filters_input}
+											%input{:type => "hidden", :name => "filters[check_links]", :checked => (@check_links || false)}
+											%input{:type => "submit", :value => "See Results"}
+
+
+							- else
+								- @results[:links_found].each do |link_url|
+									%li= link_url
+
+			%tr
+				%td{:width => "600px"}
+					Words found:
+					%p
+						= @results[:words].join(" &#149; ")
