@@ -11,7 +11,7 @@ def search_page(url, word_filters, link_filters = nil)
 	results[:matches_found] = text_filter(words, word_filters, uri.to_s)
 
 	if link_filters
-		results[:links_found] = grab_links(body, link_filters, URI(uri).host)
+		results[:links_found] = grab_links(body, link_filters, uri.host)
 	end
 
 	results

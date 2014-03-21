@@ -22,7 +22,11 @@ get '/url' do
 	@results = search_page(@url, word_filters, link_filters)
 
 	if @check_links && !@results[:links_found].empty?
-		@results[:checked_links] = assess_links(@results[:links_found], word_filters)
+		begin
+			@results[:checked_links] = assess_links(@results[:links_found], word_filters)
+		rescue
+			return "Sorry, didn't work. It's a known bug. :("
+		end
 	end
 
 	#I am using a string to represent any errors found
