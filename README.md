@@ -1,6 +1,6 @@
 #Event/ Miner
 
-####Not quite as good as Event/ _Mainor_
+> Not quite as good as Event/ _Mainor_
 
 Check it out here: [https://eventminer.herokuapp.com/](https://eventminer.herokuapp.com/)
 
