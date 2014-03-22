@@ -62,7 +62,7 @@ def parse_filters(filter_form_input)
 		when "has_type"
 			filters[filter_matcher + "_has_type"] = CONTENT_TYPES[filter_matcher]
 		when "within_url"
-			if (filter_matcher[0] == "/") & (filter_matcher[-1] == "/")
+			if (filter_matcher[0] == "/") && (filter_matcher[-1] == "/")
 				#format is /regexp/
 				filter_matcher = Regexp.new(filter_matcher[1..-2])
 			end
